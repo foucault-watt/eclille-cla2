@@ -2,7 +2,7 @@
 # BUILDER #
 ###########
 
-FROM python:3.9-slim
+FROM python:3.9-slim-bookworm
 
 # Répertoire de travail
 WORKDIR /usr/src/app
