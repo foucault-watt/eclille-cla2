@@ -48,3 +48,10 @@ RUN pip install --upgrade pip \
 
 # Copie du reste du projet
 COPY . .
+
+# --- Déploiement (Coolify) ---
+# Le docker-compose.yml de dev surcharge command + DJANGO_SETTINGS_MODULE, donc inchangé pour le dev local.
+ENV DJANGO_SETTINGS_MODULE=cla_web.settings.production
+RUN chmod +x /usr/src/app/entrypoint.sh
+EXPOSE 8000
+CMD ["/usr/src/app/entrypoint.sh"]

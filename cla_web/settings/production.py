@@ -70,3 +70,25 @@ AUTH_PASSWORD_VALIDATORS = [
 #        }
 #    }
 #}
+
+
+# Derrière le reverse proxy Coolify (Traefik) : TLS terminé par le proxy
+
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+SESSION_COOKIE_SECURE = config("SECURE_COOKIES", True, cast=bool)
+CSRF_COOKIE_SECURE = config("SECURE_COOKIES", True, cast=bool)
+
+
+# Fichiers statiques servis par WhiteNoise (plus d'Apache devant)
+
+MIDDLEWARE.insert(
+    MIDDLEWARE.index("django.middleware.security.SecurityMiddleware") + 1,
+    "whitenoise.middleware.WhiteNoiseMiddleware",
+)
+STATICFILES_STORAGE = "whitenoise.storage.CompressedStaticFilesStorage"
+
+
+# Médias (uploads) : Django les sert lui-même seulement si SERVE_MEDIA=true.
+# À activer uniquement si l'ancien Apache les exposait déjà (cf. urls.py).
+
+SERVE_MEDIA = config("SERVE_MEDIA", False, cast=bool)
